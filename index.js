@@ -1,46 +1,43 @@
 const express = require("express");
 const app = express()
 const path = require('path');
-// var homeRouter = require('./views/home');
-// var loginRouter = require('./views/login');
-// var gameRouter = require('./views/game');
-// console.dir(app)
+var newRouter = require('./routes/new');
 
-// app.use((req, res) => {
-//     console.log("WE GOT A NEW REQUEST!!")
-//     // res.send("HELLO TITO I GOT YOUR REQUEST!")
-//     // 
-//     res.send('<h1>LOVE WEBPAGE!</h1>')
-// })
+// app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// app.get('*', (req, res) => {
-//     res.send("I don't know the path!")
-// })
-
-// app.get('/', (req, res) => {
-//     res.send('This is the home page!')
-// })
-
-// app.get('/cat', (req, res) => {
-//     res.send('MEOW!!')
-// })
-
-// app.post('/cat', (req, res) => {
-//     res.send('POST MEOW!!')
-// })
-
-// app.get('/dogs', (req, res) => {
-//     res.send('WOOF!')
-// })
 app.use(express.static(path.join(__dirname, 'public')));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// app.use('/', homeRouter);
-// app.use('/login', loginRouter);
-// app.use('/game', gameRouter);
+app.use('/api', newRouter);
+
+
+// const comments = [
+
+//     {
+//         username: 'Tito'
+//         city: 'surabaya'
+//     },
+    
+//     {
+//         username: 'Skyler'
+//         city: 'new york'
+//     },
+
+//     {
+//         username: "Rebecca"
+//         city: "jakarta"
+//     }
+
+// ]
+
+app.get('/option', (req, res) => {
+    res.render('option')
+})
 
 app.get('/', (req, res) => {
     res.render('home')
@@ -57,11 +54,6 @@ app.get('/login', (req, res) => {
 app.get('/game', (req, res) => {
     res.render('game')
 })
-
-// app.get('/random', (req, res) => {
-//     const randomy = Math.floor(Math.random()*10)+1;
-//     res.render('random', {randomy})
-// })
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -40,7 +40,7 @@
             </div>
             <h3 id="messageAfterSubmit"></h3>
             <a href="/game">
-                <button class="button-intro">
+                <button class="button-intro" disabled id="playgamebutton">
                 PLAY GAME
                 </button>
             </a>
@@ -52,10 +52,29 @@
             submitAction.addEventListener("submit", function(){
                     const inputNama = document.getElementById("nama").value;
                     const inputDomisili = document.getElementById("domisili").value;
-                    const hiddenMessage = "Halo "+inputNama+" dari "+inputDomisili+" selamat bermain!";
+                    // const hiddenMessage = "Halo "+inputNama+" dari "+inputDomisili+" selamat bermain!";
                     console.log("Nama : ",inputNama);
                     console.log("Domisili : ",inputDomisili);
-                    document.getElementById("messageAfterSubmit").innerText = hiddenMessage;
+
+                    fetch("http://localhost:3000/api/login",
+                    {
+                        headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    method: "POST",
+                    body:  JSON.stringify({username: inputNama, domisili: inputDomisili})
+                    })
+                    .then(function(res){return res.json()})
+                    // .then(function(res){ console.log(res.message) 
+                    .then(function(res){ console.log(res.message) 
+                        document.getElementById("messageAfterSubmit").innerText = res.message;
+                        if(res.message == "login berhasil") {
+                            document.getElementById("playgamebutton").removeAttribute('disabled');
+                        }
+                    })
+                    .catch(function(res){ console.log(res) })
+                    // document.getElementById("messageAfterSubmit").innerText = hiddenMessage;
                     event.preventDefault();
             });
         </script>
